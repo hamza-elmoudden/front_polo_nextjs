@@ -106,6 +106,8 @@ function returnPolicyNode(locale: Locale) {
     applicableCountry: MARKET_COUNTRY,
     returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
     merchantReturnDays: REFUND_DAYS,
+    // Digital delivery (code + credentials by email): nothing is shipped back.
+    returnMethod: "https://schema.org/KeepProduct",
     returnFees: "https://schema.org/FreeReturn",
     refundType: "https://schema.org/FullRefund",
     merchantReturnLink: `${siteUrl}${localePath(locale, "/policy")}`,
