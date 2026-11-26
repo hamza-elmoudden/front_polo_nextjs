@@ -1,7 +1,4 @@
-"use client";
-
-import { useEffect, useId, useRef } from "react";
-import { loadGsap } from "@/lib/gsap";
+import { useId } from "react";
 
 /** Triangular peaks: `step` px wide, crest at `top`, valley at `bottom`, filled down to `base`. */
 function zigzag(step: number, top: number, bottom: number, base: number, shift: number) {
@@ -74,39 +71,21 @@ const VARIANTS = {
  * Decorative SVG wave that bridges two sections.
  * The wrapper has zero height and sits exactly on the section boundary; the SVG is
  * centered on that line (half over the section above, half over the one below).
+ * Each ribbon drifts sideways and swells vertically on its own CSS loop (wave-back/front in
+ * globals.css), pivoting on (720, 70) in viewBox units, which is also the centre of the flip.
  */
 export function WaveDivider({ variant = "a" }: { variant?: keyof typeof VARIANTS }) {
   const v = VARIANTS[variant];
   const flipped = "flip" in v && v.flip;
-  const root = useRef<HTMLDivElement>(null);
   // Unique per instance: the same variant can appear several times on a page.
   const gradId = `${v.id}-${useId().replace(/:/g, "")}`;
 
-  // GSAP: each ribbon drifts sideways and swells vertically on its own loop.
-  // Paths are scaled 1.1x about the centre so the drift never exposes an edge.
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    return loadGsap((gsap) => gsap.context(() => {
-      gsap.utils.toArray<SVGPathElement>(".wave-path").forEach((el, i) => {
-        gsap.set(el, { svgOrigin: "720 70", scaleX: 1.1 });
-        gsap.to(el, {
-          x: i % 2 ? -55 : 55,
-          scaleY: i % 2 ? 0.8 : 1.2,
-          duration: 5 + i * 1.5,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true,
-        });
-      });
-    }, root));
-  }, []);
   // z-10: the next section is also positioned and later in the DOM, so at z-0 its
   // background would paint over the lower half of the wave.
   // Height is shared through --wave-h so the negative margins always cancel it out:
   // the divider occupies no layout space and overlaps its neighbours instead.
   return (
     <div
-      ref={root}
       aria-hidden
       className={`pointer-events-none relative z-10 h-(--wave-h) w-full overflow-hidden [--wave-h:80px] sm:[--wave-h:100px] lg:[--wave-h:120px] ${
         flipped ? "-mb-(--wave-h)" : "-mt-[calc(var(--wave-h)/2)] -mb-[calc(var(--wave-h)/2)]"
@@ -126,8 +105,8 @@ export function WaveDivider({ variant = "a" }: { variant?: keyof typeof VARIANTS
           </linearGradient>
         </defs>
         <g transform={flipped ? "translate(0 140) scale(1 -1)" : undefined}>
-          <path className="wave-path" d={v.back} fill={`url(#${gradId})`} opacity="0.35" />
-          <path className="wave-path" d={v.front} fill={`url(#${gradId})`} opacity="0.7" />
+          <path className="animate-wave-back [transform-box:view-box] [transform-origin:720px_70px] motion-reduce:animate-none" d={v.back} fill={`url(#${gradId})`} opacity="0.35" />
+          <path className="animate-wave-front [transform-box:view-box] [transform-origin:720px_70px] motion-reduce:animate-none" d={v.front} fill={`url(#${gradId})`} opacity="0.7" />
         </g>
       </svg>
     </div>

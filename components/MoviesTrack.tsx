@@ -51,7 +51,8 @@ export function MoviesTrack({ movies }: { movies: Movie[] }) {
       {movies.map((m, i) => (
         <Image
           key={m.file}
-          src={`/movies/${encodeURIComponent(m.file)}`}
+          // 32px copy from `npm run images`: blur-2xl hides the detail, so the full poster is wasted bytes.
+          src={`/_img/blur/${encodeURIComponent(m.file)}`}
           alt=""
           fill
           unoptimized

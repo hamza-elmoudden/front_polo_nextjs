@@ -138,6 +138,19 @@
   --animate-bob: bob 6s ease-in-out infinite;
   --animate-shimmer: shimmer 2.8s ease-in-out infinite;
   --animate-ping-soft: ping-soft 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  /* WaveDivider ribbons (sine in-out, back and forth) */
+  --animate-wave-back: wave-back 5s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+  --animate-wave-front: wave-front 6.5s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+
+  /* Scaled 1.1x wide so the sideways drift never exposes an edge. */
+  @keyframes wave-back {
+    from { transform: scale(1.1, 1); }
+    to { transform: translateX(55px) scale(1.1, 1.2); }
+  }
+  @keyframes wave-front {
+    from { transform: scale(1.1, 1); }
+    to { transform: translateX(-55px) scale(1.1, 0.8); }
+  }
 
   @keyframes bob {
     0%, 100% { transform: translateY(0); }
