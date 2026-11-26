@@ -77,6 +77,11 @@ const dictionary = {
       title: "Blockbusters and Hit Series",
       sub: "The latest films and the most popular series, ready to stream whenever you want.",
     },
+    features: {
+      label: "Why choose us",
+      title: "Everything You Need in One Subscription",
+      sub: "Live TV, movies, sports and 4K streaming on every device — all in a single plan.",
+    },
     language: "Language",
     about: {
       label: "About Us",
@@ -195,6 +200,7 @@ const dictionary = {
       title: "Page not found",
       text: "The page you are looking for does not exist or was moved.",
       back: "Back to home",
+      redirect: "Redirecting to the home page in {s}s…",
     },
   },
   pl: {
@@ -235,6 +241,11 @@ const dictionary = {
       label: "Filmy i seriale",
       title: "Hity kinowe i najpopularniejsze seriale",
       sub: "Najnowsze filmy i najchętniej oglądane seriale — gotowe do oglądania, kiedy tylko chcesz.",
+    },
+    features: {
+      label: "Dlaczego my",
+      title: "Wszystko, czego potrzebujesz, w jednej subskrypcji",
+      sub: "Telewizja na żywo, filmy, sport i streaming 4K na każdym urządzeniu — w jednym pakiecie.",
     },
     language: "Język",
     about: {
@@ -354,6 +365,7 @@ const dictionary = {
       title: "Nie znaleziono strony",
       text: "Strona, której szukasz, nie istnieje lub została przeniesiona.",
       back: "Wróć na stronę główną",
+      redirect: "Przekierowanie na stronę główną za {s} s…",
     },
   },
 } as const;

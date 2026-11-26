@@ -4,11 +4,11 @@ type LoaderArgs = { src: string; width: number; quality?: number };
 
 /**
  * Global next/image loader (images.loaderFile).
- * - Sanity images: resized by Sanity's own CDN (w/q/auto=format), no proxy hop.
+ * - Sanity and Unsplash images: resized by their own CDN (w/q/auto=format), no proxy hop.
  * - Everything else (files in /public): served directly from /public.
  */
 export default function imageLoader({ src, width, quality }: LoaderArgs) {
-  if (src.startsWith("https://cdn.sanity.io/")) {
+  if (src.startsWith("https://cdn.sanity.io/") || src.startsWith("https://images.unsplash.com/")) {
     const url = new URL(src);
     url.searchParams.set("w", String(width));
     url.searchParams.set("q", String(quality || 75));
