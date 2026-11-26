@@ -18,7 +18,7 @@ export function ScrollToTop({ label }: { label: string }) {
       aria-label={label}
       title={label}
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className={`fixed bottom-6 left-6 z-90 grid size-12 cursor-pointer place-items-center rounded-full border-0 bg-linear-135 from-crimson to-teal text-white shadow-lg transition duration-300 hover:-translate-y-0.5 max-md:bottom-4 max-md:left-4 max-md:size-11 ${
+      className={`fixed bottom-6 left-6 z-90 grid size-12 cursor-pointer place-items-center rounded-full border-0 bg-gradient-accent text-white shadow-glow transition-all duration-300 hover:-translate-y-0.5 hover:scale-105 hover:shadow-glow-lg active:scale-95 max-md:bottom-4 max-md:left-4 max-md:size-11 ${
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
       }`}
     >

@@ -1,93 +1,44 @@
-"use client";
+const CHAR_MS = 35; // typing speed per character
+const START_MS = 250; // delay before typing starts
 
-import { useEffect, useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
+/** When the headline finishes typing; the blocks below the title fade in relative to this. */
+export const heroTypeEndMs = (text: string) => START_MS + Array.from(text).length * CHAR_MS;
 
-/** Hero headline: typewriter loop: types, holds, erases, repeats. */
+/**
+ * Hero headline: types itself in once, then a caret blinks at the end.
+ * Pure CSS, so the characters start hidden in the server HTML: no flash of the full
+ * text before hydration and nothing to download first. Reduced motion shows it as-is.
+ */
 export function HeroTitle({ text, className }: { text: string; className?: string }) {
-  const ref = useRef<HTMLHeadingElement>(null);
-
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const chars = Array.from(el.querySelectorAll<HTMLElement>(".hc"));
-    const caret = "3px 0 0 #5cb6d6";
-    const len = chars.length;
-    const render = (n: number) => {
-      chars.forEach((c, k) => {
-        c.style.opacity = k < n ? "1" : "0";
-        c.style.boxShadow = k === n - 1 ? caret : "none";
-      });
-      // caret sits before the first character while the text is empty
-      if (n === 0 && chars[0]) chars[0].style.boxShadow = "-3px 0 0 #5cb6d6";
-    };
-    render(0);
-
-    const ctx = gsap.context(() => {
-      const state = { n: 0 };
-      const update = () => render(Math.round(state.n));
-      // type -> hold -> erase -> pause -> repeat forever
-      const tl = gsap.timeline({ repeat: -1, delay: 0.3 });
-      tl.to(state, { n: len, duration: 6, ease: "none", onUpdate: update })
-        .to(state, { n: len, duration: 5 })
-        .to(state, { n: 0, duration: 5, ease: "none", onUpdate: update })
-        .to(state, { n: 0, duration: 4 });
-    }, el);
-
-    return () => {
-      ctx.revert();
-      chars.forEach((c) => {
-        c.style.opacity = "";
-        c.style.boxShadow = "";
-      });
-    };
-  }, [text]);
+  const words = text.split(" ");
+  let i = 0;
 
   return (
-    <h1 ref={ref} className={`text-white ${className ?? ""}`} aria-label={text}>
-      {text.split(" ").map((w, i, arr) => (
+    <h1 className={`text-white ${className ?? ""}`} aria-label={text}>
+      {words.map((w, wi) => (
         <span
-          key={i}
+          key={wi}
           aria-hidden
           className="inline-block whitespace-nowrap motion-safe:animate-word-hue"
-          style={{ animationDelay: `${-8 + i * 0.6}s` }}
+          style={{ animationDelay: `${-8 + wi * 0.6}s` }}
         >
           {Array.from(w).map((c, j) => (
-            <span key={j} className="hc">
+            <span
+              key={j}
+              className="motion-safe:animate-char-in"
+              style={{ animationDelay: `${START_MS + i++ * CHAR_MS}ms` }}
+            >
               {c}
             </span>
           ))}
-          {i < arr.length - 1 ? "\u00A0" : ""}
+          {wi < words.length - 1 && (i++, " ")}
         </span>
       ))}
+      <span
+        aria-hidden
+        className="ml-1 inline-block h-[0.85em] w-[3px] translate-y-[0.1em] rounded-full bg-teal-light motion-safe:animate-caret motion-reduce:hidden"
+        style={{ animationDelay: `${heroTypeEndMs(text)}ms` }}
+      />
     </h1>
-  );
-}
-
-/** Fades/slides a block of children in sequence (used for the hero paragraph, buttons, stats). */
-export function HeroReveal({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const ctx = gsap.context(() => {
-      gsap.from(el.children, {
-        y: 28,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        stagger: 0.15,
-        delay: 0.7,
-      });
-    }, el);
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <div ref={ref} className={className}>
-      {children}
-    </div>
   );
 }

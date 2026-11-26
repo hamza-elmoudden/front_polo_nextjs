@@ -62,7 +62,12 @@ export async function PricingSection({ plans, section, showHeader = true, eagles
   };
 
   return (
-    <section id="plans" className={`${sectionPadding} relative isolate scroll-mt-20 overflow-hidden bg-bg`}>
+    <section id="plans" className={`${sectionPadding} max-md:px-3! relative isolate scroll-mt-20 overflow-hidden bg-bg`}>
+      {/* Ambient glows from the matching gradient: magenta top-left, azure bottom-right. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-20 overflow-hidden">
+        <div className="absolute top-[10%] -left-[10%] size-[520px] rounded-full bg-magenta/18 blur-[140px] max-md:size-[320px]" />
+        <div className="absolute -right-[10%] bottom-0 size-[520px] rounded-full bg-azure/18 blur-[140px] max-md:size-[320px]" />
+      </div>
       {eagles && (
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           <EagleBackground />
@@ -81,7 +86,7 @@ export async function PricingSection({ plans, section, showHeader = true, eagles
       {plans.length ? (
         <PlanSlider prev={ui.plans.prev} next={ui.plans.next}>
           {plans.map((plan) => (
-            <div key={plan._id} className="w-[360px] shrink-0 snap-center max-md:w-full max-md:max-w-none">
+            <div key={plan._id} className="w-[360px] shrink-0 snap-center max-md:w-full">
               <PlanCard plan={toPlanCard(plan, locale, featuredId)} labels={labels} />
             </div>
           ))}

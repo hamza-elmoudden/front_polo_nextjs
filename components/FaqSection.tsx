@@ -10,7 +10,9 @@ export async function FaqSection({ faq, showHeader = true }: { faq: FaqPage; sho
     .filter((q) => q.question);
 
   return (
-    <section id="faq" className={`${section} bg-linear-to-b from-bg to-steel/6`}>
+    <section id="faq" className={`${section} relative isolate overflow-hidden bg-linear-to-b from-bg via-surface to-bg`}>
+      {/* Section identity: deep violet → steel wash (generic gradient, cool end). */}
+      <div aria-hidden className="pointer-events-none absolute top-1/4 left-1/2 -z-10 h-[420px] w-[min(900px,100%)] -translate-x-1/2 rounded-full bg-gradient-dusk opacity-40 blur-[120px]" />
       <div className="mx-auto max-w-[760px]">
         {showHeader ? (
           <div className={sectionHeadCenter}>

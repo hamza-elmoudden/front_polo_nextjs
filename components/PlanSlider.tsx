@@ -38,7 +38,7 @@ export function PlanSlider({ children, prev, next }: { children: React.ReactNode
 
 
   const arrow =
-    "absolute top-1/2 z-10 flex size-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-teal/40 bg-bg/90 text-xl text-teal transition hover:scale-110 hover:bg-teal hover:text-white";
+    "absolute top-1/2 z-10 flex size-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-line bg-card/90 text-xl text-teal-light backdrop-blur transition-all duration-300 hover:scale-110 hover:border-transparent hover:bg-gradient-accent hover:text-white hover:shadow-glow active:scale-95";
 
   return (
     <div
@@ -48,16 +48,16 @@ export function PlanSlider({ children, prev, next }: { children: React.ReactNode
       onTouchStart={() => setPaused(true)}
       onTouchEnd={() => setTimeout(() => setPaused(false), 6000)}
     >
-      <button type="button" aria-label={prev} onClick={() => scroll(-1)} className={`${arrow} left-0 max-md:left-1 md:-left-5`}>
+      <button type="button" aria-label={prev} onClick={() => scroll(-1)} className={`${arrow} -left-5 max-md:hidden`}>
         ‹
       </button>
       <div
         ref={ref}
-        className="flex snap-x justify-center-safe snap-mandatory items-start gap-6 overflow-x-auto scroll-smooth px-2 py-6 max-md:px-12 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex snap-x justify-center-safe snap-mandatory items-start gap-6 overflow-x-auto scroll-smooth px-4 pt-8 pb-14 max-md:grid max-md:grid-cols-1 max-md:gap-8 max-md:overflow-visible max-md:snap-none max-md:px-0 max-md:pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {children}
       </div>
-      <button type="button" aria-label={next} onClick={() => scroll(1)} className={`${arrow} right-0 max-md:right-1 md:-right-5`}>
+      <button type="button" aria-label={next} onClick={() => scroll(1)} className={`${arrow} -right-5 max-md:hidden`}>
         ›
       </button>
     </div>

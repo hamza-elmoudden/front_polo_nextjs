@@ -28,6 +28,8 @@ export async function MoviesSlider() {
 
   return (
     <section id="movies" className="relative isolate overflow-x-clip py-24 max-[480px]:py-16" aria-labelledby="movies-title">
+      {/* Section identity: purple → blue glow from the matching gradient. */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-1/3 -z-[5] mx-auto h-72 max-w-[900px] rounded-full bg-linear-to-r from-amethyst/20 via-periwinkle/15 to-azure/20 blur-[100px]" />
       <div className={`${sectionHeadCenter} px-8`}>
         <span className={sectionLabel}>{ui.movies.label}</span>
         <h2 id="movies-title" className={sectionTitle}>

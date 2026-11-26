@@ -8,16 +8,16 @@ const styles = {
 export function Logo({ variant = "nav", href }: { variant?: "nav" | "footer"; href: string }) {
   const s = styles[variant];
   return (
-    <Link href={href} className={`flex shrink-0 items-center gap-[0.6rem] ${s.link}`} aria-label="IPTV Pro">
+    <Link href={href} className={`group flex shrink-0 items-center gap-[0.6rem] ${s.link}`} aria-label="IPTV Pro">
       <span
-        className={`flex flex-col overflow-hidden ring-1 ring-white/20 ${s.icon}`}
+        className={`flex flex-col overflow-hidden shadow-glow-warm ring-1 ring-white/20 transition-transform duration-300 group-hover:scale-105 ${s.icon}`}
         aria-hidden
       >
         <span className="flex-1 bg-white" />
-        <span className="flex-1 bg-[#dc143c]" />
+        <span className="flex-1 bg-crimson" />
       </span>
       <span className={`font-extrabold tracking-[-0.5px] text-white ${s.text}`}>
-        IPTV<span className="text-teal">Pro</span>
+        IPTV<span className="bg-gradient-accent text-gradient">Pro</span>
       </span>
     </Link>
   );
