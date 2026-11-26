@@ -4,7 +4,7 @@ type Props = { label?: string; title: string; sub?: string };
 export function PageHero({ label, title, sub }: Props) {
   return (
     <header className="relative isolate overflow-hidden px-8 pt-18 pb-14 text-center max-[480px]:px-[1.2rem]">
-      <div aria-hidden className="absolute inset-0 -z-20 bg-[url('/hero.jpeg')] bg-cover bg-center bg-no-repeat" />
+      <div aria-hidden className="absolute inset-0 -z-20 bg-[url('/_img/hero-1376.webp')] bg-cover bg-center bg-no-repeat" />
       <div aria-hidden className="absolute inset-0 -z-10 bg-bg/55" />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-brand opacity-75" />
       <div aria-hidden className="absolute -top-24 left-[15%] -z-10 size-[380px] rounded-full bg-azure/25 blur-[110px]" />

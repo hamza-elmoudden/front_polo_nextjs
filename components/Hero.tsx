@@ -3,8 +3,7 @@ import { getI18n } from "@/lib/locale";
 import type { HomePage } from "@/lib/sanity/types";
 import { btnOutline, btnPrimary } from "@/lib/ui";
 import { HeroTitle } from "@/components/HeroText";
-import heroImage from "@/public/hero.jpeg";
-import heroMobileImage from "@/public/hero-mobile.jpeg";
+import { localSrcSet, localVariant } from "@/lib/local-images";
 
 /** Paragraph, buttons and stats fade up one after another while the title types. */
 const fadeUp = "motion-safe:animate-fade-up";
@@ -23,9 +22,11 @@ export async function Hero({ home }: { home: HomePage }) {
       {/* Art direction: phones (<768px) get the portrait crop, larger screens the wide one.
           A <picture> lets the browser download only the image that matches. */}
       <picture>
-        <source media="(max-width: 767px)" srcSet={heroMobileImage.src} />
+        <source media="(max-width: 767px)" srcSet={localSrcSet("/hero-mobile.jpeg")} sizes="100vw" />
         <img
-          src={heroImage.src}
+          src={localVariant("/hero.jpeg", 1376) ?? "/hero.jpeg"}
+          srcSet={localSrcSet("/hero.jpeg")}
+          sizes="100vw"
           alt={ui.alt.hero}
           fetchPriority="high"
           decoding="async"

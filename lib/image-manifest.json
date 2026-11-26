@@ -1,0 +1,23 @@
+{
+  "/hero.jpeg": {
+    "name": "hero",
+    "widths": [
+      384,
+      640,
+      750,
+      828,
+      1080,
+      1200,
+      1376
+    ]
+  },
+  "/hero-mobile.jpeg": {
+    "name": "hero-mobile",
+    "widths": [
+      384,
+      640,
+      750,
+      768
+    ]
+  }
+}

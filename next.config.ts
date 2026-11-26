@@ -21,6 +21,14 @@ const nextConfig: NextConfig = {
   },
   partialPrefetching: true,
   turbopack: {
+    // Next.js always bundles a small polyfill module (Array.prototype.at/flat/flatMap,
+    // Object.fromEntries/hasOwn, String.prototype.trimStart/trimEnd, ...) into the main
+    // client chunk, regardless of browserslist. Every browser Next.js supports
+    // (Chrome/Edge/Firefox 111+, Safari 16.4+) has these natively, so swap it for an
+    // empty module to drop the "Legacy JavaScript" Lighthouse warning.
+    resolveAlias: {
+      "../build/polyfills/polyfill-module": "./lib/empty-polyfill.js",
+    },
     rules: {
       "*.css": {
         loaders: ["@tailwindcss/turbopack"],
