@@ -1,25 +1,129 @@
 @import "tailwindcss";
 
-/* Design tokens, ported from desing_exsample/iptv-site.html */
-:root {
-  --nav-h: 72px;
-  color-scheme: dark;
-}
-
+/*
+ * Design tokens.
+ * Colors live in @theme (→ `bg-*`, `text-*`, `border-*` utilities); `static` keeps every
+ * variable in the output because the gradients below and some components reference them
+ * through var(). Gradients are defined once in :root and exposed as `bg-gradient-*` utilities.
+ */
 @theme inline {
   --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
 }
 
-@theme {
-  --color-bg: #0d0810;
-  --color-fg: #f0e8ea;
-  --color-muted: #bfa5a4;
+@theme static {
+  /* Surfaces */
+  --color-bg: #08090d; /* page */
+  --color-surface: #10121a; /* alternate sections, footer */
+  --color-card: #151824; /* cards, panels, inputs */
+  --color-line: rgb(255 255 255 / 0.08); /* hairline borders */
+  --color-fg: #eef0f6;
+  --color-muted: #a7adc2; /* ≥ 7:1 on bg and card */
+
+  /* Generic gradient: brand identity, large backgrounds */
   --color-crimson: #dc143c;
-  --color-teal: #0093d5;
-  --color-teal-light: #5cb6d6;
+  --color-plum: #c11f6d;
+  --color-orchid: #923d88;
   --color-violet: #5c4b8a;
   --color-steel: #344e76;
+  --color-ink: #2f4858;
 
+  /* Matching gradient: buttons, interactive and highlighted elements */
+  --color-magenta: #da1280;
+  --color-amethyst: #b248be;
+  --color-periwinkle: #576ee6;
+  --color-azure: #0086ed;
+  --color-teal: #0093d5;
+
+  /* Spot palette: badges, icons, borders, small details */
+  --color-dusty-rose: #d9908d;
+  --color-blush: #ffe4e1;
+  --color-teal-light: #5cb6d6;
+
+  /* Device mockup (components/DeviceMockup.tsx) */
+  --color-mk-navy: #0b0f1a;
+  --color-mk-pink: #e11d74;
+  --color-mk-purple: #6d28d9;
+  --color-mk-blue: #1e40af;
+  --color-mk-red: #e11d48;
+  --color-mk-cyan: #38bdf8;
+  --color-mk-green: #22c55e;
+  --color-mk-indigo: #6366f1;
+  --color-mk-glass: rgb(20 22 35 / 0.75);
+
+  /* Coloured glows for hover / featured states */
+  --shadow-glow:
+    0 18px 45px -18px color-mix(in srgb, var(--color-magenta) 55%, transparent),
+    0 10px 32px -14px color-mix(in srgb, var(--color-azure) 45%, transparent);
+  --shadow-glow-lg:
+    0 30px 70px -22px color-mix(in srgb, var(--color-magenta) 60%, transparent),
+    0 16px 48px -16px color-mix(in srgb, var(--color-azure) 50%, transparent);
+  --shadow-glow-warm:
+    0 18px 45px -18px color-mix(in srgb, var(--color-crimson) 50%, transparent),
+    0 10px 32px -14px color-mix(in srgb, var(--color-orchid) 45%, transparent);
+}
+
+:root {
+  --nav-h: 72px;
+  color-scheme: dark;
+
+  /* Generic gradient: hero, page headers, brand accents */
+  --gradient-brand: linear-gradient(120deg, var(--color-crimson) 0%, var(--color-plum) 25%, var(--color-orchid) 50%, var(--color-violet) 75%, var(--color-ink) 100%);
+  /* Same colours, looping back to the start, for the animated (background-position) washes */
+  --gradient-brand-loop: linear-gradient(120deg, var(--color-crimson), var(--color-plum), var(--color-orchid), var(--color-violet), var(--color-steel), var(--color-ink), var(--color-crimson));
+  /* Matching gradient: CTAs, active states, highlighted content */
+  --gradient-accent: linear-gradient(120deg, var(--color-magenta) 0%, var(--color-amethyst) 30%, var(--color-periwinkle) 65%, var(--color-azure) 85%, var(--color-teal) 100%);
+  /* Spot palette: small badges and labels */
+  --gradient-spot: linear-gradient(120deg, var(--color-dusty-rose) 0%, var(--color-blush) 50%, var(--color-teal-light) 100%);
+  /* Light tint for headings and prices: stays readable on dark surfaces */
+  --gradient-heading: linear-gradient(120deg, #fff 0%, var(--color-blush) 55%, var(--color-teal-light) 100%);
+  /* Deep, low-contrast blend for section washes (FAQ, cards) */
+  --gradient-dusk: linear-gradient(160deg, var(--color-violet) 0%, var(--color-steel) 55%, var(--color-ink) 100%);
+  /* Device mockup: play button, active tab, progress fill */
+  --gradient-mk: linear-gradient(90deg, var(--color-mk-pink) 0%, var(--color-mk-purple) 55%, #2563eb 100%);
+}
+
+@utility bg-gradient-brand {
+  background-image: var(--gradient-brand);
+}
+@utility bg-gradient-brand-loop {
+  background-image: var(--gradient-brand-loop);
+}
+@utility bg-gradient-accent {
+  background-image: var(--gradient-accent);
+}
+@utility bg-gradient-spot {
+  background-image: var(--gradient-spot);
+}
+@utility bg-gradient-heading {
+  background-image: var(--gradient-heading);
+}
+@utility bg-gradient-mk {
+  background-image: var(--gradient-mk);
+}
+@utility bg-gradient-dusk {
+  background-image: var(--gradient-dusk);
+}
+
+/* Clip the element's background (a bg-gradient-* utility) to its text. */
+@utility text-gradient {
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/*
+ * Turns an absolutely positioned layer into a gradient outline: only its padding area
+ * stays visible. Pair with `absolute inset-0 p-px` and a bg-gradient-* utility.
+ */
+@utility gradient-border {
+  pointer-events: none;
+  border-radius: inherit;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+@theme {
   --animate-pulse-dot: pulse-dot 2s infinite;
   --animate-hue-text: hue-text 12s ease-in-out infinite;
   --animate-word-hue: word-hue 8s linear infinite;
@@ -27,6 +131,43 @@
   --animate-scroll-ltr: scroll-ltr 40s linear infinite;
   --animate-scroll-rtl: scroll-rtl 45s linear infinite;
   --animate-eagle-drift: eagle-drift 22s ease-in-out infinite;
+  --animate-char-in: char-in 0.12s ease-out both;
+  --animate-caret: caret 1.1s ease-in-out infinite both;
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 1.2s ease-out both;
+  --animate-bob: bob 6s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.8s ease-in-out infinite;
+  --animate-ping-soft: ping-soft 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes shimmer {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(300%); }
+  }
+  @keyframes ping-soft {
+    0% { transform: scale(1); opacity: 0.7; }
+    80%, 100% { transform: scale(2.4); opacity: 0; }
+  }
+
+  @keyframes char-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes caret {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 
   @keyframes eagle-drift {
     0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
@@ -39,17 +180,18 @@
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(0.8); }
   }
+  /* Only colours with ≥ 3:1 contrast on the dark background (large text). */
   @keyframes hue-text {
     0%, 100% { color: var(--color-fg); }
     25% { color: var(--color-teal-light); }
-    50% { color: var(--color-crimson); }
-    75% { color: var(--color-violet); }
+    50% { color: var(--color-blush); }
+    75% { color: var(--color-amethyst); }
   }
   @keyframes word-hue {
-    0%, 100% { color: var(--color-crimson); }
+    0%, 100% { color: var(--color-magenta); }
     25% { color: var(--color-teal-light); }
-    50% { color: var(--color-violet); }
-    75% { color: var(--color-teal); }
+    50% { color: var(--color-amethyst); }
+    75% { color: var(--color-blush); }
   }
   @keyframes rainbow-shift {
     0%, 100% { background-position: 0% 50%; }
